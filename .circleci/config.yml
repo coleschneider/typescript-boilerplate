@@ -11,6 +11,9 @@ jobs:
       - SOURCE_BRANCH: master
       - TARGET_BRANCH: gh-pages
     steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "3e:4b:af:63:8a:86:a9:99:ec:5c:a8:4b:63:62:da:ba"
       - checkout
       - restore_cache:
           keys:

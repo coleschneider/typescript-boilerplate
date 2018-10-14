@@ -32,8 +32,7 @@ jobs:
       - run:
           name: Deploy
           command: |
+              git config --global push.default matching
               git pull
               npm run build
-              git checkout gh-pages
-
               git push

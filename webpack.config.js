@@ -8,7 +8,7 @@ const CssExtractPlugin = require('mini-css-extract-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 //CONSTANTS
-const buildDir = 'dist';
+const buildDir = 'docs';
 const NODE_ENV = process.env.NODE_ENV || 'dev';
 const isProd = NODE_ENV === 'prod';
 

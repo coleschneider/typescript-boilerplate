@@ -37,8 +37,13 @@ jobs:
       # run tests!
       - run: npm test
       
-      - run: npm build
+      -deploy:
+          name: Deploy
+          command: |
+          npm run build
 
-          - run:
-          name: Run deploy scripts
-          command: ../deploy.sh
+          git add .
+
+          git commit -m "automated deploy"
+          
+          git push origin master

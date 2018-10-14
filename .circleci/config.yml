@@ -38,3 +38,7 @@ jobs:
       - run: npm test
       
       - run: npm build
+
+          - run:
+          name: Run deploy scripts
+          command: ../deploy.sh

@@ -4,6 +4,6 @@ exports[`App Should render 1`] = `
 <div
   className="wrap"
 >
-  Hello World!
+  Hello it works!
 </div>
 `;

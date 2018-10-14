@@ -15,7 +15,8 @@ jobs:
       # - image: circleci/mongo:3.4.4
 
     working_directory: ~/typescript-boilerplate
-
+      - SOURCE_BRANCH: master
+      - TARGET_BRANCH: master
 
     steps:
       - checkout
@@ -37,13 +38,29 @@ jobs:
       # run tests!
       - run: npm test
       
-      -deploy:
+        - deploy:
           name: Deploy
           command: |
-          npm run build
+            if [ $CIRCLE_BRANCH == $SOURCE_BRANCH ]; then
+              git config --global user.email $GH_EMAIL
+              git config --global user.name $GH_NAME
 
-          git add .
+              git clone $CIRCLE_REPOSITORY_URL out
 
-          git commit -m "automated deploy"
-          
-          git push origin master
+              cd out
+              git checkout $TARGET_BRANCH || git checkout --orphan $TARGET_BRANCH
+              git rm -rf .
+              cd ..
+
+              npm run build
+
+              cp -a build/. out/.
+
+              mkdir -p out/.circleci && cp -a .circleci/. out/.circleci/.
+              cd out
+
+              git add -A
+              git commit -m "Automated deployment to GitHub Pages" --allow-empty
+
+              git push origin $TARGET_BRANCH
+            fi

@@ -2,7 +2,7 @@
 
 exports[`App Should render 1`] = `
 <div
-  className="wrapper"
+  className="wrap"
 >
   Hello World!
 </div>

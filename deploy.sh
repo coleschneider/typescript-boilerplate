@@ -1,4 +1,4 @@
 npm run build
-git add docs/
+git add .
 git commit -m "Automated build"
 git push

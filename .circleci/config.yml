@@ -29,15 +29,10 @@ jobs:
       - deploy:
           name: Deploy
           command: |
-            if [ $CIRCLE_BRANCH == $SOURCE_BRANCH ]; then
-              git config --global user.email $GH_EMAIL
-              git config --global user.name $GH_NAME
-              
               npm run build
 
               git add .
-              
-              git commit -m "Automated deployment to GitHub Pages: ${CIRCLE_SHA1}" --allow-empty
+
+              git commit -m "Automate"
 
               git push origin $TARGET_BRANCH
-            fi

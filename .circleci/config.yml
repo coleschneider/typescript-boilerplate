@@ -20,7 +20,8 @@ jobs:
     steps:
          - add_ssh_keys:
           fingerprints:
-            - "f6:ae:21:40:0a:0f:32:f6:9a:33:a3:c6:54:9d:3c:55"
+           - "SO:ME:FIN:G:ER:PR:IN:T"
+
       - checkout
 
       # Download and cache dependencies
@@ -40,6 +41,4 @@ jobs:
       # run tests!
       - run: npm test
       
-      - run:
-          name: Run deploy scripts
-          command: ../deploy.sh
+      - run: npm run build

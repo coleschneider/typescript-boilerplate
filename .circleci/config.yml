@@ -33,19 +33,19 @@ jobs:
               git config --global user.email $GH_EMAIL
               git config --global user.name $GH_NAME
 
-              git clone $CIRCLE_REPOSITORY_URL lib
+              git clone $CIRCLE_REPOSITORY_URL docs
 
-              cd lib
+              cd docs
               git checkout $TARGET_BRANCH || git checkout --orphan $TARGET_BRANCH
               git rm -rf .
               cd ..
 
               npm run build
 
-              cp -a build/. lib/.
+              cp -a build/. docs/.
 
-              mkdir -p lib/.circleci && cp -a .circleci/. lib/.circleci/.
-              cd lib
+              mkdir -p docs/.circleci && cp -a .circleci/. docs/.circleci/.
+              cd docs
 
               git add -A
               git commit -m "Automated deployment to GitHub Pages: ${CIRCLE_SHA1}" --allow-empty

@@ -1,19 +1,14 @@
 version: 2
 jobs:
   build:
-    filters:
-      branches:
-        only: master
     docker:
-      - image: circleci/node:8
+      - image: circleci/node:10.9.0
     working_directory: ~/typescript-boilerplate
-    environment:
-      - SOURCE_BRANCH: master
-      - TARGET_BRANCH: gh-pages
+
     steps:
       - add_ssh_keys:
           fingerprints:
-            - "3e:4b:af:63:8a:86:a9:99:ec:5c:a8:4b:63:62:da:ba"
+            - $CI_FINGERPRINT
       - checkout
       - restore_cache:
           keys:
@@ -30,9 +25,12 @@ jobs:
           name: Run tests
           command: npm test
       - run:
+          name: Build doc folder
+          command: npm run build
+      - run:
           name: Deploy
           command: |
-              git config --global push.default matching
+              git config --global push.default simple
               git pull
-              npm run build
+              git add .
               git push

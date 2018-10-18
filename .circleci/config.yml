@@ -8,7 +8,7 @@ jobs:
     steps:
       - add_ssh_keys:
           fingerprints:
-            - $CI_FINGERPRINT
+            - "06:be:43:3f:6b:d7:7e:4b:1f:ef:f1:f5:de:49:20:e5"
       - checkout
       - restore_cache:
           keys:

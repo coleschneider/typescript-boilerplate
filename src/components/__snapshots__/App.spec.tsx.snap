@@ -1,9 +1,20 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`App Should render 1`] = `
-<div
-  className="wrap"
->
-  Hello it works!
-</div>
+<BrowserRouter>
+  <div>
+    <Component />
+    <Header />
+    <Switch>
+      <Route
+        component={[Function]}
+        exact={true}
+        path="/"
+      />
+      <Route
+        render={[Function]}
+      />
+    </Switch>
+  </div>
+</BrowserRouter>
 `;

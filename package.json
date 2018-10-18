@@ -8,10 +8,9 @@
     "prebuild": "rm -rf docs",
     "start": "webpack-dev-server --hot --mode development",
     "build": "NODE_ENV=production webpack --mode production",
-    "lint": "tslint -c tslint.json --project tsconfig.json",
     "unit-test": "jest",
     "unit-test:watch": "jest --watchAll",
-    "test": "npm run lint && npm run unit-test"
+    "test": "npm run unit-test"
   },
   "author": "Cole Schneider",
   "license": "ISC",

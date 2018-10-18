@@ -1,61 +1,59 @@
-const _ = require('lodash');
+/* eslint-disable */
+const path = require('path')
+const webpack = require('webpack')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
+const CssExtractPlugin = require("mini-css-extract-plugin");
+const isProd = process.env.NODE_ENV === 'production'
 const autoprefixer = require('autoprefixer');
-const webpack = require('webpack');
-
-//PLUGINS
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CssExtractPlugin = require('mini-css-extract-plugin');
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
-
-//CONSTANTS
-const buildDir = 'docs';
-const NODE_ENV = process.env.NODE_ENV || 'dev';
-const isProd = NODE_ENV === 'prod';
 
 module.exports = {
-
-    entry: {
-    app: ['react-hot-loader/patch', './src/index.tsx']
+  entry: {
+    vendor: [
+      // Required to support async/await
+      '@babel/polyfill',
+    ],
+    main: ['./src/index'],
   },
   output: {
-    path: `${__dirname}/${buildDir}`,
-    filename: 'bundle.js',
-    chunkFilename: '[chunkhash].js',
+    path: path.join(__dirname, 'dist'),
+    filename: '[name].js',
   },
-  target: 'web',
   devtool: isProd ? 'source-map' : 'eval',
+
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
-  },
-    optimization: {
-    splitChunks: {
-      name: true,
-      cacheGroups: {
-        commons: {
-          chunks: 'initial',
-          minChunks: 2
-        },
-        vendors: {
-          test: /[\\/]node_modules[\\/]/,
-          chunks: 'all',
-          priority: -10
-        }
-      }
+    alias: {
+      // 'react-hot-loader': path.resolve(path.join(__dirname,'./node_modules/react-hot-loader')),
+      react: path.resolve(path.join(__dirname, './node_modules/react')),
     },
-    runtimeChunk: true
   },
   module: {
-    rules: [{
-        test: /\.tsx?$/,
-        use: [{
-          loader: 'ts-loader',
-          options: {
-            happyPackMode: true,
-            transpileOnly: !isProd,
-            experimentalWatchApi: true,
-          },
-        }, ],
+    rules: [
+      {
+        test: /\.(j|t)sx?$/,
         exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            cacheDirectory: true,
+            babelrc: false,
+            presets: [
+              [
+                '@babel/preset-env',
+                { targets: { browsers: 'last 2 versions' } }, // or whatever your project requires
+              ],
+              '@babel/preset-typescript',
+              '@babel/preset-react',
+            ],
+            plugins: [
+              // plugin-proposal-decorators is only needed if you're using experimental decorators in TypeScript
+              ['@babel/plugin-proposal-decorators', { legacy: true }],
+              ['@babel/plugin-proposal-class-properties', { loose: true }],
+              'react-hot-loader/babel',
+            ],
+          },
+        },
       },
       {
         test: /\.(css|s[ac]ss)$/,
@@ -72,6 +70,7 @@ module.exports = {
             loader: 'postcss-loader',
             options: {
               sourceMap: isProd,
+              plugins: () => [require('autoprefixer')]
             },
           },
           {
@@ -82,46 +81,10 @@ module.exports = {
           },
         ],
       },
-      {
-        test: /\.(woff|woff2|eot|ttf)$/,
-        loader: 'url-loader?limit=100000',
-      },
-      {
-        test: /\.(gif|ico|jpg|png|svg)$/,
-        exclude: /node_modules/,
-        use: [{
-            loader: 'url-loader',
-            options: {
-              limit: 8192,
-            },
-          },
-          {
-            loader: 'image-webpack-loader',
-            options: {
-              svgo: {
-                full: true,
-                plugins: [{
-                    removeTitle: true
-                  }, //@ADA compliance (DSP-16035)
-                  {
-                    removeDesc: true
-                  }, //@ADA compliance (DSP-16035)
-                ],
-              },
-            },
-          },
-        ],
-      },
     ],
   },
-
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-
-    new webpack.NamedModulesPlugin(),
-
-    new webpack.NoEmitOnErrorsPlugin(),
-
+    new ForkTsCheckerWebpackPlugin(),
     new webpack.DefinePlugin({
       WEBPACK_BUILD_TYPE: JSON.stringify(isProd ? 'production' : 'development'),
     }),
@@ -136,23 +99,11 @@ module.exports = {
         postcss: [autoprefixer()],
       },
     }),
-
+    new webpack.NamedModulesPlugin(),
     new HtmlWebpackPlugin({
       template: 'index.html',
       filename: 'index.html',
       inject: 'body', // put the script files in the body,
-      APP_NAME: require('./package.json').name,
-      VERSION: require('./package.json').version,
     }),
-
-    new ForkTsCheckerWebpackPlugin()
   ],
-
-  devServer: {
-    host: 'localhost',
-    port: 3000,
-    contentBase: `${buildDir}/`,
-    stats: 'minimal',
-    clientLogLevel: 'warning'
-  },
-};
+}

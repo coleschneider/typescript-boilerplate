@@ -6,7 +6,9 @@
       "quotemark": [true, "single", "jsx-double"],
       "trailing-comma": [false],
       "ordered-imports":[false],
-      "member-access": [false]
+      "member-access": [false],
+      "jsx-no-lambda": [false],
+      "no-any": [false],
     },
     "rulesDirectory": []
   }

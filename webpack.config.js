@@ -16,7 +16,7 @@ module.exports = {
     main: ['./src/index'],
   },
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: path.join(__dirname, 'docs'),
     filename: '[name].js',
   },
   devtool: isProd ? 'source-map' : 'eval',

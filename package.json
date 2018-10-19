@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Typescript Boilerplate - hot reloading and optimization for production",
   "main": "index.js",
+  "homepage": "https://coleschneider.github.io/typescript-boilerplate/",
   "scripts": {
     "prestart": "rm -rf docs",
     "prebuild": "rm -rf docs",
